@@ -4,8 +4,8 @@ export class User {
     constructor (
         // This class will define what all attributes a user object will contain
         private socket: WebSocket,
-        private offer: RTCSessionDescription | null,
-        private answer: RTCSessionDescription | null,
+        private offer: RTCSessionDescription | undefined,
+        private answer: RTCSessionDescription | undefined,
         private candidates: RTCIceCandidate[],
         private roomId: string,
     ) {
@@ -24,6 +24,8 @@ export class User {
 
     public setOffer = (offer: RTCSessionDescription) => this.offer = offer;
     public setAnswer = (answer: RTCSessionDescription) => this.answer = answer;
-    public addCandidates = (candidate: RTCIceCandidate) => this.candidates.push(candidate);
+    public addCandidates = (candidates: RTCIceCandidate[]) => {
+        this.candidates = [...this.candidates, ...candidates]
+    }
     public setRoomId = (roomId: string) => this.roomId = roomId; 
 }

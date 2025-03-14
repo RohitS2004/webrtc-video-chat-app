@@ -30,4 +30,8 @@ export class Room {
         }
     }
 
+    getUsers () {
+        return this.users;
+    }
+
 }

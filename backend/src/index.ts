@@ -1,15 +1,21 @@
 import { WebSocketServer, WebSocket } from "ws";
 import { Manager } from "./Manager";
-import { handleRoomCreate } from "./Handlers";
+import { handleRoomCreate, handleRoomJoin } from "./Handlers";
 
 const wss = new WebSocketServer({ port: 8080 });
-const manager: Manager = new Manager([]);
+export const manager: Manager = new Manager([]);
 
-type TMessage = "create" | "join" | "leave" | "offer" | "answer" | "candidate";
+type TMessage = "create" | "join" | "leave"
+export interface IPayload {
+    roomId?: string,
+    offer?: RTCSessionDescription,
+    answer?: RTCSessionDescription,
+    candidates?: RTCIceCandidate[]
+}
 
 interface IMessage {
     type: TMessage,
-    payload: Object
+    payload: IPayload
 }
 
 wss.on("connection", (socket: WebSocket) => {
@@ -19,7 +25,12 @@ wss.on("connection", (socket: WebSocket) => {
 
         switch (message.type) {
             case "create": {
-                handleRoomCreate(socket);
+                handleRoomCreate(socket, message.payload);
+                break;
+            }
+
+            case "join": {
+                handleRoomJoin(socket, message.payload)
                 break;
             }
         }

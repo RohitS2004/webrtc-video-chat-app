@@ -15,4 +15,8 @@ export class Manager {
     removeRoom(room: Room) {
         this.rooms = this.rooms.filter(r => r.getRoomId() !== room.getRoomId());
     }
+
+    getRoom (roomId: string) {
+        return this.rooms.find(r => r.getRoomId() === roomId);
+    }
 }
